@@ -1,0 +1,54 @@
+﻿@page "/"
+@using BlazorSignalR.Hub
+@using Microsoft.AspNetCore.SignalR
+@using static BlazorSignalR.Hub.HubInterface
+@inject IHubContext<ClientHub> _hub;
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Use</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Temperature</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in HubInterface.Clients)
+        {
+            <tr>
+                <td>
+                    <button class="btn btn-primary" @onclick="() => Send(client.Value)">Click me</button>
+                </td>
+                <td>@client.Value.Id</td>
+                <td>@client.Value.Name</td>
+                <td>@client.Value.Temperature °C</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        ClientHub.ClientsChanged += async (object? sender, EventArgs args) => await InvokeAsync(() => StateHasChanged());
+        base.OnInitialized();
+    }
+
+    private async Task Send(ClientReference client)
+    {
+        HubInterface hub = new HubInterface(_hub);
+        client.Temperature = (await hub.GetSensor(client.Id)).ToString();
+        StateHasChanged();
+    }
+}
+
+
+
+
