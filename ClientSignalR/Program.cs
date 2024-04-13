@@ -4,12 +4,22 @@ using System.Security.Cryptography;
 
 namespace ClientSignalR
 {
-    internal class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
+            Run().RunSynchronously();
+        }
+
+        static async Task Run()
+        {
+            var port = Environment.GetEnvironmentVariable("PORT");
+
+            port ??= "5001";
+            var url = $"https://localhost:{port}";
+
             var hubConnection = new HubConnectionBuilder()
-             .WithUrl("https://localhost:7228/clienthub") // Reemplaza esta URL con la URL de tu servidor SignalR
+             .WithUrl($"{url}/clienthub") // Reemplaza esta URL con la URL de tu servidor SignalR
              .WithAutomaticReconnect()
              .Build();
 
@@ -21,7 +31,12 @@ namespace ClientSignalR
                 return hubConnection.SendAsync("SetName", nombre);
             };
 
-            await hubConnection.StartAsync();
+            while (hubConnection.ConnectionId == null)
+            {
+                Console.WriteLine($"Intentando conectar al servidor de signalR en {url}...");
+                hubConnection.StartAsync();
+                await Task.Delay(2000);
+            }
             Console.WriteLine("Conectado al servidor SignalR. Seteando nombre...");
 
 
@@ -35,5 +50,6 @@ namespace ClientSignalR
 
             await hubConnection.StopAsync();
         }
+
     }
 }

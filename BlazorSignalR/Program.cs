@@ -10,6 +10,12 @@ namespace BlazorSignalR
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var port = Environment.GetEnvironmentVariable("PORT");
+
+            port ??= "5001";
+
+            builder.WebHost.UseUrls($"0.0.0.0:{port}");
+
             // Agregar servicios a contenedor
             builder.Services.AddRazorComponents(); 
 
