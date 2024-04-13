@@ -1,6 +1,7 @@
 using BlazorSignalR.Components;
 using BlazorSignalR.Hub;
 using Microsoft.AspNetCore.SignalR;
+using static System.Net.WebRequestMethods;
 
 namespace BlazorSignalR
 {
@@ -11,10 +12,13 @@ namespace BlazorSignalR
             var builder = WebApplication.CreateBuilder(args);
 
             var port = Environment.GetEnvironmentVariable("PORT");
+            var use_https = Environment.GetEnvironmentVariable("USE_HTTPS");
 
             port ??= "5001";
+            use_https ??= "false";
+            var protocol = bool.Parse(use_https) ? "https" : "http";
 
-            builder.WebHost.UseUrls($"https://localhost:{port}");
+            builder.WebHost.UseUrls($"{protocol}://localhost:{port}");
 
             // Agregar servicios a contenedor
             builder.Services.AddRazorComponents(); 
