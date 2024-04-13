@@ -14,7 +14,7 @@ namespace BlazorSignalR
 
             port ??= "5001";
 
-            builder.WebHost.UseUrls($"0.0.0.0:{port}");
+            builder.WebHost.UseUrls($"localhost:{port}");
 
             // Agregar servicios a contenedor
             builder.Services.AddRazorComponents(); 
