@@ -17,15 +17,20 @@ namespace ClientSignalR
 
             var nombre = RandomNameGenerator.GenerateRandomName();
 
-            hubConnection.On("GetSensor", () => { return new Random().Next(-10, 50); });
+            hubConnection.On("GetSensor", () => {
+                var result = new Random().Next(-10, 50);
+                Console.WriteLine($"[{DateTime.Now}]: Metodo [GetSensor] llamado. Devolviendo resultado '{result}'...");
+                return result;
+            });
+
             hubConnection.Reconnected += (string obj) =>
             {
                 return hubConnection.SendAsync("SetName", nombre);
             };
 
+            Console.WriteLine($"Intentando conectar al servidor de signalR en {url}...");
             while (hubConnection.ConnectionId == null)
             {
-                Console.WriteLine($"Intentando conectar al servidor de signalR en {url}...");
                 hubConnection.StartAsync();
                 await Task.Delay(2000);
             }

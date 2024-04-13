@@ -3,9 +3,7 @@
     "ClientSignalR": {
       "commandName": "Project",
       "environmentVariables": {
-        "HOST_PORT": "7228",
-        "USE_HTTPS": "false",
-        "HOST_URL": "localhost"
+        "HOST_URL": "https://localhost:7228"
       }
     }
   }
