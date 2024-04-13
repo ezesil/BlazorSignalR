@@ -11,7 +11,7 @@ namespace ClientSignalR
             var url = Environment.GetEnvironmentVariable("HOST_URL");
 
             var hubConnection = new HubConnectionBuilder()
-             .WithUrl($"{url}/clienthub") // Reemplaza esta URL con la URL de tu servidor SignalR
+             .WithUrl(url) // Reemplaza esta URL con la URL de tu servidor SignalR
              .WithAutomaticReconnect()
              .Build();
 
@@ -28,9 +28,9 @@ namespace ClientSignalR
                 return hubConnection.SendAsync("SetName", nombre);
             };
 
-            Console.WriteLine($"Intentando conectar al servidor de signalR en {url}...");
-            while (hubConnection.ConnectionId == null)
+            while (hubConnection.State != HubConnectionState.Connected)
             {
+                Console.WriteLine($"Intentando conectar al servidor de signalR en {url}...");
                 hubConnection.StartAsync();
                 await Task.Delay(2000);
             }

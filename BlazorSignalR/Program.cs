@@ -18,7 +18,7 @@ namespace BlazorSignalR
             var url = $"{protocol}://localhost:{port}";
 
 
-            builder.WebHost.UseUrls(url);
+            builder.WebHost.UseUrls($"{url}");
 
             // Agregar servicios a contenedor
             builder.Services.AddRazorComponents(); 
@@ -31,13 +31,6 @@ namespace BlazorSignalR
             builder.Services.AddControllers(); // <-- Agrega esta línea
 
             var app = builder.Build();
-
-            //// Configurar el pipeline de solicitudes HTTP
-            //if (!app.Environment.IsDevelopment())
-            //{
-            //    app.UseExceptionHandler("/Error");
-            //    app.UseHsts();
-            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

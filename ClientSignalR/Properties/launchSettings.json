@@ -3,7 +3,7 @@
     "ClientSignalR": {
       "commandName": "Project",
       "environmentVariables": {
-        "HOST_URL": "https://localhost:7228"
+        "HOST_URL": "http://localhost:8080/myclienthub"
       }
     }
   }
