@@ -11,14 +11,14 @@ namespace BlazorSignalR
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var port = Environment.GetEnvironmentVariable("PORT");
-            var use_https = Environment.GetEnvironmentVariable("USE_HTTPS");
+            bool.TryParse(Environment.GetEnvironmentVariable("USE_HTTPS"), out bool use_https);
 
-            port ??= "5001";
-            use_https ??= "false";
-            var protocol = bool.Parse(use_https) ? "https" : "http";
+            var protocol = use_https ? "https" : "http";
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "5001";
+            var url = $"{protocol}://localhost:{port}";
 
-            builder.WebHost.UseUrls($"{protocol}://localhost:{port}");
+
+            builder.WebHost.UseUrls(url);
 
             // Agregar servicios a contenedor
             builder.Services.AddRazorComponents(); 
@@ -32,12 +32,12 @@ namespace BlazorSignalR
 
             var app = builder.Build();
 
-            // Configurar el pipeline de solicitudes HTTP
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
+            //// Configurar el pipeline de solicitudes HTTP
+            //if (!app.Environment.IsDevelopment())
+            //{
+            //    app.UseExceptionHandler("/Error");
+            //    app.UseHsts();
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

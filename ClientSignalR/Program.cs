@@ -6,17 +6,9 @@ namespace ClientSignalR
 {
     public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Run().RunSynchronously();
-        }
-
-        static async Task Run()
-        {
-            var port = Environment.GetEnvironmentVariable("PORT");
-
-            port ??= "5001";
-            var url = $"https://localhost:{port}";
+            var url = Environment.GetEnvironmentVariable("HOST_URL");
 
             var hubConnection = new HubConnectionBuilder()
              .WithUrl($"{url}/clienthub") // Reemplaza esta URL con la URL de tu servidor SignalR
@@ -50,6 +42,5 @@ namespace ClientSignalR
 
             await hubConnection.StopAsync();
         }
-
     }
 }
