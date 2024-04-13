@@ -32,7 +32,6 @@ namespace BlazorSignalR
 
             var app = builder.Build();
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             // Mapear la aplicación de Blazor Server
