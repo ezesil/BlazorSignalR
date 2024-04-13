@@ -15,7 +15,7 @@ namespace BlazorSignalR
 
             var protocol = use_https ? "https" : "http";
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5001";
-            var url = $"{protocol}://localhost:{port}";
+            var url = $"{protocol}://0.0.0.0:{port}";
 
 
             builder.WebHost.UseUrls($"{url}");
